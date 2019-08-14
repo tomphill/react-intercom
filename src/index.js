@@ -56,18 +56,18 @@ export default class Intercom extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const {
       appID,
       ...otherProps,
-    } = nextProps;
+    } = this.props;
 
     if (!canUseDOM) return;
 
     window.intercomSettings = { ...otherProps, app_id: appID };
 
     if (window.Intercom) {
-      if (this.loggedIn(this.props) && !this.loggedIn(nextProps)) {
+      if (this.loggedIn(prevProps) && !this.loggedIn(this.props)) {
         // Shutdown and boot each time the user logs out to clear conversations
         window.Intercom('shutdown');
         window.Intercom('boot', otherProps);
